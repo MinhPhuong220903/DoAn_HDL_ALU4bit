@@ -27,25 +27,66 @@ begin
 
     process
     begin
+        report "Start ALU4 VHDL Testbench";
+
         A <= "0101";
         B <= "0011";
 
-        sel <= "000"; wait for 10 ns; -- A + B
-        sel <= "001"; wait for 10 ns; -- A - B
-        sel <= "010"; wait for 10 ns; -- A AND B
-        sel <= "011"; wait for 10 ns; -- A OR B
-        sel <= "100"; wait for 10 ns; -- A XOR B
-        sel <= "101"; wait for 10 ns; -- NOT A
-        sel <= "110"; wait for 10 ns; -- A > B
-        sel <= "111"; wait for 10 ns; -- Y = A
+        sel <= "000"; 
+        wait for 10 ns;
+        assert Y = "1000" and carry = '0' and zero = '0'
+        report "Test ADD failed" severity error;
+
+        sel <= "001"; 
+        wait for 10 ns;
+        assert Y = "0010" and carry = '0' and zero = '0'
+        report "Test SUB failed" severity error;
+
+        sel <= "010"; 
+        wait for 10 ns;
+        assert Y = "0001" and carry = '0' and zero = '0'
+        report "Test AND failed" severity error;
+
+        sel <= "011"; 
+        wait for 10 ns;
+        assert Y = "0111" and carry = '0' and zero = '0'
+        report "Test OR failed" severity error;
+
+        sel <= "100"; 
+        wait for 10 ns;
+        assert Y = "0110" and carry = '0' and zero = '0'
+        report "Test XOR failed" severity error;
+
+        sel <= "101"; 
+        wait for 10 ns;
+        assert Y = "1010" and carry = '0' and zero = '0'
+        report "Test NOT A failed" severity error;
+
+        sel <= "110"; 
+        wait for 10 ns;
+        assert Y = "0001" and carry = '0' and zero = '0'
+        report "Test A > B failed" severity error;
+
+        sel <= "111"; 
+        wait for 10 ns;
+        assert Y = "0101" and carry = '0' and zero = '0'
+        report "Test PASS A failed" severity error;
 
         A <= "0001";
         B <= "0001";
-        sel <= "001"; wait for 10 ns; -- zero = 1
+        sel <= "001"; 
+        wait for 10 ns;
+        assert Y = "0000" and zero = '1'
+        report "Test ZERO failed" severity error;
 
         A <= "1111";
         B <= "0001";
-        sel <= "000"; wait for 10 ns; -- carry = 1
+        sel <= "000"; 
+        wait for 10 ns;
+        assert Y = "0000" and carry = '1' and zero = '1'
+        report "Test CARRY failed" severity error;
+
+        report "All ALU4 VHDL tests completed successfully";
 
         wait;
     end process;
